@@ -6,7 +6,6 @@ from __future__ import (division, print_function, absolute_import,
 
 __all__ = ["app"]
 
-import json
 import flask
 import psycopg2
 
@@ -39,25 +38,21 @@ def new_poem():
     return flask.redirect(flask.url_for("poem", poem_id=new_id))
 
 
-@app.route("/<poem_id>")
+@app.route("/<int:poem_id>")
 def poem(poem_id):
-    try:
-        pg_db = psycopg2.connect("dbname=twitterbot")
-        cursor = pg_db.cursor()
-        cursor.execute("""WITH poem AS ( SELECT * FROM poems WHERE id=%s )
-                SELECT l1,l2,l3,l4,l5,lines.id,tweet_id,screen_name,body FROM
-                lines,poem WHERE lines.id IN (l1,l2,l3,l4,l5)
-                """, poem_id)
-        results = cursor.fetchall()
-        if len(results) != 5:
-            flask.abort(404)
+    pg_db = psycopg2.connect("dbname=twitterbot")
+    cursor = pg_db.cursor()
+    cursor.execute("""WITH poem AS ( SELECT * FROM poems WHERE id=%s )
+            SELECT l1,l2,l3,l4,l5,lines.id,tweet_id,screen_name,body FROM
+            lines,poem WHERE lines.id IN (l1,l2,l3,l4,l5)
+            """, (poem_id, ))
+    results = cursor.fetchall()
+    if len(results) != 5:
+        flask.abort(404)
 
-        order = [results[0][k] for k in range(5)]
-        lines = sorted(results, key=lambda o: order.index(o[5]))
-        lines = [{"id": l[6], "body": l[8].decode("utf-8"), "screen_name": l[7]}
-                for l in lines]
-    except Exception as e:
-        import traceback
-        return str(traceback.traceback())
+    order = [results[0][k] for k in range(5)]
+    lines = sorted(results, key=lambda o: order.index(o[5]))
+    lines = [{"id": l[6], "body": l[8].decode("utf-8"), "screen_name": l[7]}
+             for l in lines]
 
     return flask.render_template("index.html", lines=lines)
