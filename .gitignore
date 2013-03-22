@@ -2,3 +2,4 @@ values.sh
 venv
 *.pyc
 data
+config.py
