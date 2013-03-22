@@ -1,93 +1,26 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+{% extends "base.html" %}
 
-    <title>Twitter Limericks</title>
+{% block content %}
 
-<style>
+{% for l in lines %}
+<div class="line">
+    <a class="tweet" href="https://twitter.com/{{ l.screen_name }}/statuses/{{ l.id }}" target="_blank">{{ l.body|safe }}</a>
+</div>
+{% endfor %}
 
-body {
-    font-family: "American Typewriter", "Courier New", Courier, monospace;
-    font-size: 18pt;
-    line-height: 1.7;
-    color: #333;
-}
+<div id="cred">
+    A limerick by
+    {% for l in lines[:-1] %}
+        <a class="screen-name" href="https://twitter.com/{{ l.screen_name }}" target="_blank">@{{ l.screen_name }}</a>,
+    {% endfor %}
+    and
+    <a class="screen-name" href="https://twitter.com/{{ lines[-1].screen_name }}" target="_blank">@{{ lines[-1].screen_name }}</a>.
+    Lovingly edited by <a href="http://dan.iel.fm">Dan</a>'s robot.
+    Inspired by <a href="http://pentametron.com/">Pentametron</a>.
+</div>
 
-a {
-    color: #383;
-    text-decoration: none;
-}
+<div class="another">
+    <a href="{{ url_for('new_poem') }}">Get another one.</a>
+</div>
 
-a:hover {
-    text-decoration: underline;
-}
-
-#container {
-    position: relative;
-    left: 12%;
-    top: 50px;
-    width: 76%;
-}
-
-.line {
-    font-size: 24pt;
-    line-height: 1.4;
-    padding-bottom: 0.5em;
-}
-
-#cred {
-    margin-bottom: 20px;
-    padding: 20px 0 20px;
-    font-size: 12pt;
-    color: #888;
-    border-bottom: 1px solid #888;
-    line-height: 1.4;
-}
-
-</style>
-
-</head>
-<body>
-
-    <div id="container">
-
-        {% for l in lines %}
-        <div class="line">
-            <a class="tweet" href="https://twitter.com/{{ l.screen_name }}/statuses/{{ l.id }}" target="_blank">{{ l.body|safe }}</a>
-        </div>
-        {% endfor %}
-
-        <div id="cred">
-            A limerick by
-            {% for l in lines[:-1] %}
-                <a class="screen-name" href="https://twitter.com/{{ l.screen_name }}" target="_blank">@{{ l.screen_name }}</a>,
-            {% endfor %}
-            and
-            <a class="screen-name" href="https://twitter.com/{{ lines[-1].screen_name }}" target="_blank">@{{ lines[-1].screen_name }}</a>.
-            Lovingly edited by <a href="http://dan.iel.fm">Dan</a>'s robot.
-            Inspired by <a href="http://pentametron.com/">Pentametron</a>.
-        </div>
-
-        <div class="another">
-            <a href="{{ url_for('new_poem') }}">Get another one.</a>
-        </div>
-    </div>
-
-<script type="text/javascript">
-    var _gauges = _gauges || [];
-    (function() {
-        var t   = document.createElement('script');
-        t.type  = 'text/javascript';
-        t.async = true;
-        t.id    = 'gauges-tracker';
-        t.setAttribute('data-site-id', '514beb2df5a1f5090f00002e');
-        t.src = '//secure.gaug.es/track.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(t, s);
-    })();
-</script>
-
-
-</body>
-</html>
+{% endblock %}

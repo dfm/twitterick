@@ -16,32 +16,36 @@ app = flask.Flask(__name__)
 app.config.from_object("twitterbot.config")
 
 
-@app.route("/")
-def index():
-    return "Coming soon."
-    # lines = [{"id": l["tweet_id"], "body": l["body"].decode("utf-8"),
-    #           "screen_name": l["screen_name"]}
-    #          for l in get_limerick()]
-    # return flask.render_template("index.html", lines=lines)
+@app.before_request
+def before():
+    flask.g.pg_db = psycopg2.connect("dbname=twitterbot")
 
 
 @app.route("/new")
 def new_poem():
     ids = [l["id"] for l in get_limerick()]
-    pg_db = psycopg2.connect("dbname=twitterbot")
-    cursor = pg_db.cursor()
+    cursor = flask.g.pg_db.cursor()
     cursor.execute("""INSERT INTO poems (l1,l2,l3,l4,l5)
             VALUES (%s,%s,%s,%s,%s) RETURNING id
             """, ids)
-    pg_db.commit()
+    flask.g.pg_db.commit()
     new_id = cursor.fetchone()[0]
     return flask.redirect(flask.url_for("poem", poem_id=new_id))
 
 
+@app.route("/")
 @app.route("/<int:poem_id>")
-def poem(poem_id):
-    pg_db = psycopg2.connect("dbname=twitterbot")
-    cursor = pg_db.cursor()
+def poem(poem_id=None):
+    cursor = flask.g.pg_db.cursor()
+
+    if poem_id is None:
+        cursor.execute("""SELECT id FROM poems
+                OFFSET RANDOM() * (SELECT COUNT(*) FROM poems) LIMIT 1""")
+        result = cursor.fetchone()
+        if result is None or len(result) == 0:
+            return poem()
+        poem_id = int(result[0])
+
     cursor.execute("""WITH poem AS ( SELECT * FROM poems WHERE id=%s )
             SELECT l1,l2,l3,l4,l5,lines.id,tweet_id,screen_name,body FROM
             lines,poem WHERE lines.id IN (l1,l2,l3,l4,l5)
