@@ -14,7 +14,7 @@ pg_db = psycopg2.connect("dbname=twitterbot")
 
 
 def get_op(shrt):
-    return "<=7" if shrt else ">=9"
+    return "<=6" if shrt else ">=10"
 
 
 def get_random_line(shrt=False):
