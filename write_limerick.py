@@ -40,7 +40,7 @@ def get_rhymes(id_, s3, s4, shrt=False, limit=2):
     return [dict(zip(["tweet_id", "screen_name", "body"], r)) for r in results]
 
 
-if __name__ == "__main__":
+def get_limerick():
     while 1:
         lng_line = get_random_line()
         lng_rhymes = get_rhymes(lng_line["id"], lng_line["s3"], lng_line["s4"])
@@ -60,5 +60,9 @@ if __name__ == "__main__":
     srt_rhymes += [srt_line]
     random.shuffle(srt_rhymes)
 
-    for l in lng_rhymes[:2] + srt_rhymes + [lng_rhymes[2]]:
+    return lng_rhymes[:2] + srt_rhymes + [lng_rhymes[2]]
+
+
+if __name__ == "__main__":
+    for l in get_limerick():
         print(l["body"])
