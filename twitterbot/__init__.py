@@ -21,6 +21,11 @@ def before():
     flask.g.pg_db = psycopg2.connect("dbname=twitterbot")
 
 
+@app.route("/about")
+def about():
+    return flask.render_template("about.html")
+
+
 @app.route("/new")
 def new_poem():
     ids = [l["id"] for l in get_limerick()]
