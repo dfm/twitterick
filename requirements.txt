@@ -1,0 +1,5 @@
+nltk==2.0.4
+psycopg2==2.4.6
+redis==2.7.2
+requests==1.1.0
+requests-oauthlib==0.3.0
