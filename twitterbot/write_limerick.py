@@ -56,13 +56,10 @@ def get_limerick():
         if len(srt_rhymes) >= 1:
             break
 
-    lng_rhymes += [lng_line]
-    random.shuffle(lng_rhymes)
-
     srt_rhymes += [srt_line]
     random.shuffle(srt_rhymes)
 
-    return lng_rhymes[:2] + srt_rhymes + [lng_rhymes[2]]
+    return [lng_rhymes[0], lng_line] + srt_rhymes + [lng_rhymes[1]]
 
 
 if __name__ == "__main__":
