@@ -42,7 +42,8 @@ if __name__ == "__main__":
     cursor = pg_db.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS lines
             (id SERIAL, tweet_id TEXT, screen_name TEXT,
-             syllables TEXT, count INTEGER, body TEXT)
+             count INTEGER, body TEXT,
+             s1 TEXT, s2 TEXT, s3 TEXT, s4 TEXT)
             """)
     pg_db.commit()
 
@@ -58,10 +59,11 @@ if __name__ == "__main__":
             (nm, id_str), msg = msg[:ind].split(), msg[ind + 2:]
             s, count = get_syllables(msg)
             if 4 <= count <= 12:
+                syls = [sy.strip(digits) for sy in s[-4:]]
                 cursor = pg_db.cursor()
                 cursor.execute("""INSERT INTO lines
-                        (tweet_id, screen_name, syllables, count, body)
+                        (tweet_id, screen_name, count, body, s1, s2, s3, s4)
                         VALUES
-                        (%s, %s, %s, %s, %s)
-                        """, (id_str, nm, ",".join(s), count, msg))
+                        (%s, %s, %s, %s, %s, %s, %s, %s)
+                        """, [id_str, nm, count, msg] + syls)
                 pg_db.commit()
