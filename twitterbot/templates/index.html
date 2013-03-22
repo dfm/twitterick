@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <title>Twitter Limericks</title>
+
+<style>
+
+body {
+    font-family: "American Typewriter", "Courier New", Courier, monospace;
+    font-size: 22pt;
+    line-height: 1.7em;
+    color: #333;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#container {
+    position: relative;
+    left: 12%;
+    top: 50px;
+    width: 76%;
+}
+
+</style>
+
+</head>
+<body>
+
+    <div id="container">
+    {% for l in lines %}
+    <a href="https://twitter.com/twitter/statuses/{{ l.id }}" target="_blank">{{ l.body }}</a><br>
+    {% endfor %}
+    </div>
+
+</body>
+</html>

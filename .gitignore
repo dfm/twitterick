@@ -2,4 +2,7 @@ values.sh
 venv
 *.pyc
 data
-config.py
+twitterbot/config.py
+build
+dist
+*.egg-info
