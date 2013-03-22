@@ -2,6 +2,10 @@
 
 {% block content %}
 
+<div id="poem-number">
+    This is limerick <a href="{{ url_for('poem', poem_id=poem_id) }}">#{{ poem_id }}</a>:
+</div>
+
 {% for l in lines %}
 <div class="line">
     <a class="tweet" href="https://twitter.com/{{ l.screen_name }}/statuses/{{ l.id }}" target="_blank">{{ l.body|safe }}</a>

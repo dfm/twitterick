@@ -59,4 +59,4 @@ def poem(poem_id=None):
     lines = [{"id": l[6], "body": l[8].decode("utf-8"), "screen_name": l[7]}
              for l in lines]
 
-    return flask.render_template("index.html", lines=lines)
+    return flask.render_template("index.html", lines=lines, poem_id=poem_id)
