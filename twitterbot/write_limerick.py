@@ -32,12 +32,13 @@ def get_random_line(shrt=False):
 
 def get_rhymes(id_, s3, s4, lw, shrt=False, limit=2):
     cursor = pg_db.cursor()
-    cursor.execute(("SELECT tweet_id,screen_name,body FROM lines "
+    cursor.execute(("SELECT id,tweet_id,screen_name,body FROM lines "
                     "WHERE id!=%s AND last_word!=%s AND count{0} "
                     "AND s3=%s AND s4=%s ORDER BY RANDOM() LIMIT %s")
                    .format(get_op(shrt)), (id_, lw, s3, s4, limit))
     results = cursor.fetchall()
-    return [dict(zip(["tweet_id", "screen_name", "body"], r)) for r in results]
+    return [dict(zip(["id", "tweet_id", "screen_name", "body"], r))
+            for r in results]
 
 
 def get_limerick():

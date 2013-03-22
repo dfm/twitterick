@@ -65,12 +65,12 @@ a:hover {
             {% endfor %}
             and
             <a class="screen-name" href="https://twitter.com/{{ lines[-1].screen_name }}" target="_blank">@{{ lines[-1].screen_name }}</a>.
-            Lovingly edited by <a href="http://dan.iel.fm">Dan</a> and a robot.
+            Lovingly edited by <a href="http://dan.iel.fm">Dan</a>'s robot.
             Inspired by <a href="http://pentametron.com/">Pentametron</a>.
         </div>
 
         <div class="another">
-            <a href="/">Get another one.</a>
+            <a href="{{ url_for('new_poem') }}">Get another one.</a>
         </div>
     </div>
 
