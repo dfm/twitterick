@@ -1,8 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import (division, print_function, absolute_import,
-                        unicode_literals)
+from __future__ import division, print_function, unicode_literals
 
 __all__ = ["monitor"]
 
@@ -11,8 +9,6 @@ import time
 import json
 import requests
 from requests_oauthlib import OAuth1
-
-from db_utils import redis_db
 
 
 e = os.environ
@@ -80,19 +76,21 @@ def monitor():
 if __name__ == "__main__":
     # Stream from the API and send to redis.
     for o in monitor():
+        print(o)
+        assert 0
         flag = o.get("possibly_sensitive")
-        if not flag:
-            u = o.get("user")
-            if u is not None:
-                lang = u.get("lang")
-                if lang == "en":
-                    entities = o.get("entities")
-                    if (len(entities.get("hashtags", [])) == 0 and
-                            len(entities.get("urls", [])) == 0 and
-                            len(entities.get("user_mentions", [])) == 0):
-                        id_str = o.get("id_str")
-                        t = o.get("text")
-                        nm = u.get("screen_name")
-                        if (id_str is not None and t is not None):
-                            redis_db.publish("twitterbot",
-                                             "{} {}: {}".format(nm, id_str, t))
+        # if not flag:
+        #     u = o.get("user")
+        #     if u is not None:
+        #         lang = u.get("lang")
+        #         if lang == "en":
+        #             entities = o.get("entities")
+        #             if (len(entities.get("hashtags", [])) == 0 and
+        #                     len(entities.get("urls", [])) == 0 and
+        #                     len(entities.get("user_mentions", [])) == 0):
+        #                 id_str = o.get("id_str")
+        #                 t = o.get("text")
+        #                 nm = u.get("screen_name")
+        #                 if (id_str is not None and t is not None):
+        #                     redis_db.publish("twitterbot",
+        #                                      "{} {}: {}".format(nm, id_str, t))
