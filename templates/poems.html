@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for poem in poems %}
+{% module Template("one_poem.html", **poem) %}
+{% end %}
+
+<div class="pagination">
+    {% if prev_page >= 0 %}<a href="?page={{ prev_page }}">Previous</a> // {% end %}
+    <a href="?page={{ next_page }}">Next</a>
+</div>
+
+{% end %}

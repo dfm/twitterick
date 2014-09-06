@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>{% if "title" in globals() %}{{ title }}{% else %}Twitterick{% end %}</title>
+
+<link rel="stylesheet" href="{{ static_url('normalize.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ static_url('twitterick.css') }}" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+    <div class="topbar">
+        <strong>Twitterick</strong>
+        <span>
+            <a href="/new">new</a>
+            // <a href="/recent">recent</a>
+            // <a href="/popular">popular</a>
+        </span>
+    </div>
+</div>
+
+<div class="container">
+    {% block content %}{% end %}
+</div>
+
+<script src="{{ static_url('jquery-1.11.1.min.js') }}"></script>
+<script src="{{ static_url('twitterick.js') }}"></script>
+
+</body>

@@ -1,0 +1,16 @@
+<div class="poem">
+<div class="poem-meta">
+    <div class="poem-id"><a href="/{{ poem_id }}">{{ poem_id }}</a></div>
+    <div class="like"><a href="javascript:like({{ poem_id }})" id="like-{{ poem_id}}">&#9829; <span id="votes-{{ poem_id }}">{{ votes }}</span></a></div>
+</div>
+{% for line in lines %}
+<p><a href="https://twitter.com/{{ line['username'] }}/statuses/{{ line['tweet_id'] }}" target="_blank">{% raw replace_unicode_emoji(line['body'].decode('utf-8')) %}</a></p>
+{% end %}
+<div class="credits">
+A poem by
+{% for line in lines %}
+@<a href="https://twitter.com/{{ line['username'] }}" target="_blank">{{ line['username'] }}</a>,
+{% end %}
+and <a href="https://github.com/dfm/twitterick">a robot</a>.
+</div>
+</div>
