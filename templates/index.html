@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="description">
+    Twitterick is <a href="https://github.com/dfm/twitterick">a robot</a>
+    that writes
+    <a href="http://en.wikipedia.org/wiki/Limerick_(poetry)">limericks</a>
+    where each line is one of <strong>{{ count }}</strong> tweets that we have
+    analysed so far.
+    Scroll down to see some recently generated poems or <a href="/new">click
+    here</a> to generate a new Twitterick that no one has ever seen before!
+</div>
+
+{% for poem in poems %}
+{% module Template("one_poem.html", **poem) %}
+{% end %}
+
+<div class="pagination">
+    <a href="/recent?page=1">Next</a>
+</div>
+
+{% end %}

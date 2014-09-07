@@ -28,7 +28,7 @@ class Application(tornado.web.Application):
 
     def __init__(self):
         handlers = [
-            (r"/", RecentHandler),
+            (r"/", IndexHandler),
             (r"/new", NewHandler),
             (r"/recent", RecentHandler),
             (r"/popular", PopularHandler),
@@ -64,7 +64,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def db(self):
         return self.application.db
 
-    def get_poems(self, poem_id=None, page=0, per_page=20, popular=False):
+    def get_poems(self, poem_id=None, page=0, per_page=10, popular=False):
         q = """
 select
     twittericks.id, twittericks.votes,
@@ -102,6 +102,30 @@ from twittericks
                      lines=[dict(tweet_id=r[2+i*3], username=r[3+i*3],
                                  body=r[4+i*3]) for i in range(5)])
                 for r in results]
+
+
+class IndexHandler(BaseHandler):
+
+    def get(self):
+        # Count the number of tweets.
+        with self.db as conn:
+            c = conn.cursor()
+            c.execute("select count(*) from tweets")
+            count = c.fetchone()
+
+        if count is None:
+            count = "many"
+        else:
+            count = count[0]
+
+        poems = self.get_poems()
+
+        # Get the result of the query.
+        if not len(poems):
+            self.render("noresults.html")
+
+        # Parse the poem and display the results.
+        self.render("index.html", title="Twitterick", poems=poems, count=count)
 
 
 class NewHandler(BaseHandler):

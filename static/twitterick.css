@@ -42,10 +42,15 @@ a:hover {
 
 .container {
     width: 600px;
-    margin: 20px auto;
+    margin: 20px auto 100px;
 }
 
 .topbar {
+    width: 600px;
+    margin: 20px auto;
+}
+
+.topbar-inner {
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(200, 200, 200, 0.3);
     margin-bottom: 50px;
@@ -57,9 +62,46 @@ a:hover {
     font-size: 16px;
 }
 
-.topbar a, .topbar strong {
+.topbar span a {
     background-position: 0 15px;
     color: rgba(0, 0, 0, 0.8);
+}
+
+.topbar strong {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.topbar strong a {
+    background: none;
+}
+
+.description {
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.3);
+    margin-bottom: 50px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.description a {
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0) 75%, rgba(0,0,0,0.8) 75%);
+}
+
+.new-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    padding: 20px 0 30px;
+}
+
+.new-button a {
+    background: none;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 3px;
 }
 
 .poem {

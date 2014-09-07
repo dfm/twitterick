@@ -10,19 +10,23 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="topbar">
-        <strong>Twitterick</strong>
+<div class="topbar">
+    <div class="topbar-inner">
+        <strong><a href="/">Twitterick</a></strong>
         <span>
-            <a href="/new">new</a>
-            // <a href="/recent">recent</a>
+            <a href="/recent">recent</a>
             // <a href="/popular">popular</a>
         </span>
     </div>
 </div>
 
+
 <div class="container">
     {% block content %}{% end %}
+</div>
+
+<div class="new-button">
+    <a href="/new">Generate a new unique poem.</a>
 </div>
 
 <div class="footer">
