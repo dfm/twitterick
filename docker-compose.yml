@@ -1,0 +1,14 @@
+version: '2'
+services:
+    web:
+        build: web
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./web:/code
+        depends_on:
+            - postgres
+    postgres:
+        image: postgres:9.5
+        environment:
+            POSTGRES_PASSWORD: docker

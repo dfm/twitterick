@@ -6,3 +6,5 @@ twitterbot/config.py
 build
 dist
 *.egg-info
+face
+values.yml

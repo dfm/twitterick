@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import division, print_function, unicode_literals
-
-__all__ = []
-
 import re
 import string
 from functools import partial
-from itertools import product, izip, imap
+from itertools import product
 
 from nltk.corpus import cmudict
 from .syllabifier import English, syllabify
+
+__all__ = ["parse_sentence"]
 
 # Emoji regular expression from:
 # http://stackoverflow.com/questions/13729638/
@@ -67,8 +65,11 @@ def parse_sentence(sent, syl=partial(syllabify, English),
     sent = sent.strip()
     if not len(sent):
         return
-    tokens = filter(len, imap(preprocess, sent.split()))
+    tokens = list(filter(len, map(preprocess, sent.split())))
     phonemes = (map(syl, pron_dict[t]) for t in tokens)
+    print(tokens)
+    print(list(map(list, phonemes)))
+    assert 0
 
     nsyllables = set()
     final_sounds = set()
@@ -77,12 +78,12 @@ def parse_sentence(sent, syl=partial(syllabify, English),
             return
 
         # Count the number of syllables and extract the stress pattern.
-        stress, syllables = izip(*((s[0], s[1:]) for w in words for s in w))
+        stress, syllables = zip(*((s[0], s[1:]) for w in words for s in w))
 
         # Compute the final sound.
         final_syllable = syllables[-1]
         if len(final_syllable[2]):
-            final_sound = "_".join(imap("_".join, final_syllable[1:]))
+            final_sound = "_".join(map("_".join, final_syllable[1:]))
         elif len(final_syllable[0]):
             final_sound = "{0}_{1}".format(final_syllable[0][-1],
                                            "_".join(final_syllable[1]))
@@ -93,4 +94,4 @@ def parse_sentence(sent, syl=partial(syllabify, English),
         nsyllables.add(len(stress))
         final_sounds.add(final_sound + "_{0}".format(int(stress[-1] > 0)))
 
-    return nsyllables, final_sounds, [tokens[-1]]
+    return nsyllables, final_sounds, tokens

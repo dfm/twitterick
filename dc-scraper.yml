@@ -1,0 +1,8 @@
+version: '2'
+services:
+    scraper:
+        build: scraper
+        volumes:
+            - ./scraper:/code
+        depends_on:
+            - postgres
