@@ -1,1 +1,1 @@
-web: python webapp.py --port=5000
+web: python webapp.py --port=$PORT
