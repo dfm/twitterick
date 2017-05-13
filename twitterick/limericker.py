@@ -41,7 +41,7 @@ def write(cursor, maxtries=100):
             continue
         long_lines = get_lines(cursor, line1[3], line1[3]+1, count=2,
                                final_sound=line1[2], final_word=line1[1])
-        if len(long_lines) == 2:
+        if len(long_lines) == 2 and long_lines[0][1] != long_lines[1][1]:
             flag = True
             break
     if not flag:
