@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import os
-import psycopg2
 
 import tornado.web
 import tornado.ioloop
@@ -114,6 +113,7 @@ class IndexHandler(BaseHandler):
         # Get the result of the query.
         if not len(poems):
             self.render("noresults.html")
+            return
 
         # Parse the poem and display the results.
         self.render("index.html", title="Twitterick", poems=poems, count=count)
@@ -139,6 +139,7 @@ class RecentHandler(BaseHandler):
         # Get the result of the query.
         if not len(poems):
             self.render("noresults.html")
+            return
 
         # Parse the poem and display the results.
         self.render("poems.html", title="Recent Twittericks", poems=poems,
@@ -157,6 +158,7 @@ class PopularHandler(BaseHandler):
         # Get the result of the query.
         if not len(poems):
             self.render("noresults.html")
+            return
 
         # Parse the poem and display the results.
         self.render("poems.html", title="Popular Twittericks", poems=poems,
@@ -171,6 +173,7 @@ class TwitterickHandler(BaseHandler):
         # Get the result of the query.
         if not len(poems):
             self.render("noresults.html")
+            return
 
         # Parse the poem and display the results.
         self.render("poem.html", title="Twitterick #{0}".format(poem_id),
