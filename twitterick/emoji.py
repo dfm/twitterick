@@ -6,7 +6,6 @@ __all__ = ["replace_unicode_emoji"]
 
 from ._unicode_characters import UNICODE_ALIAS
 
-unichr(0x0001f48b)
 _unicode_modifiers = ("\ufe0e", "\ufe0f")
 
 

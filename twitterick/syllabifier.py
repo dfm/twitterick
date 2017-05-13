@@ -73,16 +73,16 @@ def loadLanguage(filename) :
 		line = line.strip()
 		if line in ("[consonants]", "[vowels]", "[onsets]") :
 			section = line[1:-1]
-		elif section == None :
-			raise ValueError, "File must start with a section header such as [consonants]."
+		elif section is None :
+			raise ValueError("File must start with a section header such as [consonants].")
 		elif not section in L :
-			raise ValueError, "Invalid section: " + section
+			raise ValueError("Invalid section: " + section)
 		else :
 			L[section].append(line)
 
 	for section in "consonants", "vowels", "onsets" :
 		if len(L[section]) == 0 :
-			raise ValueError, "File does not contain any consonants, vowels, or onsets."
+			raise ValueError("File does not contain any consonants, vowels, or onsets.")
 
 	return L
 
@@ -148,7 +148,7 @@ def syllabify(language, word) :
 			internuclei = []
 
 		elif not phoneme in language["consonants"] and phoneme != "." :
-			raise ValueError, "Invalid phoneme: " + phoneme
+			raise ValueError("Invalid phoneme: " + phoneme)
 
 		else : # a consonant
 			internuclei.append(phoneme)
@@ -180,7 +180,7 @@ def stringify(syllables) :
 if __name__ == "__main__" :
 	import sys
 	if len(sys.argv) != 2 :
-		print "Usage: python syllabifier.py english.cfg < textfile.txt > outfile.txt"
+		print("Usage: python syllabifier.py english.cfg < textfile.txt > outfile.txt")
 	else :
 		L = loadLanguage(sys.argv[1])
 		for line in sys.stdin :

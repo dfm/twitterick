@@ -6,10 +6,11 @@ import psycopg2
 from itertools import product
 from twitterick.twitter import monitor
 from twitterick.lang import parse_sentence
+from twitterick.database import get_connection
 
 allowed_lengths = set(range(5, 14))
 
-with psycopg2.connect("dbname=twitterick") as conn:
+with get_connection() as conn:
     c = conn.cursor()
     # c.execute("drop table tweets")
     c.execute("""
@@ -77,12 +78,13 @@ for tweet in monitor():
     # Check to make sure that the parse didn't fail.
     if info is None or not info[0] & allowed_lengths:
         continue
+    print(tweet_id, username, text, random.random())
 
-    with psycopg2.connect("dbname=twitterick") as conn:
-        c = conn.cursor()
-        for n, s, w in product(*info):
-            c.execute("""
-                insert into tweets(tweet_id, username, body, syllable_count,
-                                   final_word, final_sound, random)
-                values (%s, %s, %s, %s, %s, %s, %s)
-            """, (tweet_id, username, text, n, w, s, random.random()))
+    # with psycopg2.connect("dbname=twitterick") as conn:
+    #     c = conn.cursor()
+    #     for n, s, w in product(*info):
+    #         c.execute("""
+    #             insert into tweets(tweet_id, username, body, syllable_count,
+    #                                final_word, final_sound, random)
+    #             values (%s, %s, %s, %s, %s, %s, %s)
+    #         """, (tweet_id, username, text, n, w, s, random.random()))

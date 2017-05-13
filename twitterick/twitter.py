@@ -2,18 +2,17 @@
 
 from __future__ import division, print_function, unicode_literals
 
-__all__ = ["monitor"]
-
 import os
 import time
 import json
 import requests
 from requests_oauthlib import OAuth1
 
+__all__ = ["monitor"]
 
-e = os.environ
 
 # Twitter API settings.
+e = os.environ
 url = "https://stream.twitter.com/1.1/statuses/sample.json"
 client_key = e["TW_CLIENT_KEY"]
 client_secret = e["TW_CLIENT_SECRET"]
@@ -41,13 +40,13 @@ def monitor():
                     try:
                         for line in r.iter_lines():
                             if line:
-                                yield json.loads(line)
+                                yield json.loads(line.decode("utf-8"))
 
                     except requests.exceptions.Timeout:
                         print("request timed out.")
 
                     except Exception as e:
-                        print("failed with {0}".format(e))
+                        print("failed with: {0}".format(e))
 
                 elif code == 420:
                     if wait == 0:
@@ -74,23 +73,6 @@ def monitor():
 
 
 if __name__ == "__main__":
-    # Stream from the API and send to redis.
     for o in monitor():
         print(o)
-        assert 0
-        flag = o.get("possibly_sensitive")
-        # if not flag:
-        #     u = o.get("user")
-        #     if u is not None:
-        #         lang = u.get("lang")
-        #         if lang == "en":
-        #             entities = o.get("entities")
-        #             if (len(entities.get("hashtags", [])) == 0 and
-        #                     len(entities.get("urls", [])) == 0 and
-        #                     len(entities.get("user_mentions", [])) == 0):
-        #                 id_str = o.get("id_str")
-        #                 t = o.get("text")
-        #                 nm = u.get("screen_name")
-        #                 if (id_str is not None and t is not None):
-        #                     redis_db.publish("twitterbot",
-        #                                      "{} {}: {}".format(nm, id_str, t))
+        break

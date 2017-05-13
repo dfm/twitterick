@@ -1,5 +1,6 @@
-nltk==2.0.4
-psycopg2==2.4.6
-redis==2.7.2
-requests==1.1.0
-requests-oauthlib==0.3.0
+nltk==3.2.2
+psycopg2==2.7.1
+requests==2.14.2
+oauthlib==2.0.2
+requests-oauthlib==0.8.0
+tornado==4.5.1
