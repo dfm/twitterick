@@ -2,7 +2,6 @@
 from __future__ import print_function
 
 import random
-import psycopg2
 from itertools import product
 from twitterick.twitter import monitor
 from twitterick.lang import parse_sentence
@@ -78,13 +77,13 @@ for tweet in monitor():
     # Check to make sure that the parse didn't fail.
     if info is None or not info[0] & allowed_lengths:
         continue
-    print(tweet_id, username, text, random.random())
+    print(username + ": ", text)
 
-    # with psycopg2.connect("dbname=twitterick") as conn:
-    #     c = conn.cursor()
-    #     for n, s, w in product(*info):
-    #         c.execute("""
-    #             insert into tweets(tweet_id, username, body, syllable_count,
-    #                                final_word, final_sound, random)
-    #             values (%s, %s, %s, %s, %s, %s, %s)
-    #         """, (tweet_id, username, text, n, w, s, random.random()))
+    with get_connection() as conn:
+        c = conn.cursor()
+        for n, s, w in product(*info):
+            c.execute("""
+                insert into tweets(tweet_id, username, body, syllable_count,
+                                   final_word, final_sound, random)
+                values (%s, %s, %s, %s, %s, %s, %s)
+            """, (tweet_id, username, text, n, w, s, random.random()))

@@ -13,15 +13,12 @@ from tornado.options import define, options, parse_command_line
 
 from twitterick import emoji
 from twitterick.limericker import write
+from twitterick.database import get_connection
 
 define("port", default=3058, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
 define("xheaders", default=True, help="use X-headers")
 define("cookie_secret", default="secret key", help="secure key")
-
-define("postgres_user", default=None, help="Postgres username")
-define("postgres_pass", default=None, help="Postgres password")
-define("postgres_db", default="twitterick", help="Postgres database name")
 
 
 class Application(tornado.web.Application):
@@ -45,13 +42,7 @@ class Application(tornado.web.Application):
         )
         super(Application, self).__init__(handlers, ui_methods=emoji,
                                           **settings)
-
-        dsn = "dbname={0}".format(options.postgres_db)
-        if options.postgres_user is not None:
-            dsn += " user={0}".format(options.postgres_user)
-        if options.postgres_pass is not None:
-            dsn += " password={0}".format(options.postgres_pass)
-        self._db = psycopg2.connect(dsn)
+        self._db = get_connection()
 
     @property
     def db(self):
